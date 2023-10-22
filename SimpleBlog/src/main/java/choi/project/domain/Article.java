@@ -6,9 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity // JPA 에서 관리되는 객체로 DB table과 매핑됨
+@Getter // 멤버 변수들에 대한 Getter 함수들 생성
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // protected No argument 기본 생성자를 만듬.
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +20,8 @@ public class Article {
 
     @Column(name = "content", nullable = false)
     private String content;
-
-    @Builder // 빌더 패턴으로 객체 생성
+    
+    @Builder // 빌더 패턴으로 객체 생성 매개 변수에 대한 접근 가능한 빌더를 만들어주는듯 하다 
     public Article(String title, String content) {
         this.title = title;
         this.content = content;

@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
-@RestController
+@RequiredArgsConstructor // 초기화 되지 않은 final 필드나 @NonNull이 붙은 필드에 대해 생성자를 생성해준다.
+@RestController // Rest API 서버 Controller를 위한 어노테이션
 public class BlogApiController {
     private final BlogService blogService;
 
+    // ResponseEntity 는 RequestEntity(HTTP Request)에 대한 응답데이터를 포함하는 클래스다
+    // 따라서 HttpStatus, HttpHeaders, HttpBody 를 포함한다.
     @PostMapping("/api/articles")
     public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequest request) {
         Article savedArticle = this.blogService.save(request);

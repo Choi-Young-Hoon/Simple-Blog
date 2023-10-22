@@ -3,7 +3,7 @@ package choi.project.dto;
 import choi.project.domain.Article;
 import lombok.Getter;
 
-@Getter
+@Getter // 멤버 변수들에 대한 Getter 함수를 만들어줌
 public class ArticleResponse {
     private final String title;
     private final String content;

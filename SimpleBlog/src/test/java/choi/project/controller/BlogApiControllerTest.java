@@ -26,10 +26,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@SpringBootTest // 실제 애플리케이션을 자신의 로컬에 띄운뒤 실제 DB에 연결된 상태에서 진행되는 Live 테스트 방법
+@AutoConfigureMockMvc // 테스트 방식에 대한 Annotation @WebMvcTest 도 있음.
 class BlogApiControllerTest {
-    @Autowired
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    // 테스트를 위해 실제 객체와 비슷한 객체를 만드는 것을 모킹(Mocking)이라고 한다.
+    // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    @Autowired // 의존성 주입
     protected MockMvc mockMvc;
     @Autowired
     protected ObjectMapper objectMapper; // Json으로 직렬화, 역직렬화를 위한 클래스
@@ -57,14 +60,15 @@ class BlogApiControllerTest {
         final String requestBody = objectMapper.writeValueAsString(userRequest);
 
         // when
-        // 설정한 내용을 바탕으로 요청 전송
-        ResultActions result = this.mockMvc.perform(
+        // ResultActions - mockMvc를 통해 요청을 수행한 결과를 관리하는 클래스임을 알 수 있습니다.
+        final ResultActions result = this.mockMvc.perform( // 설정한 내용을 바탕으로 요청 전송
                 MockMvcRequestBuilders.post(url)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(requestBody)
         );
 
         // then
+        //andExpect() -
         result.andExpect(MockMvcResultMatchers.status().isCreated());
 
         List<Article> articles = this.blogRepository.findAll();
@@ -135,9 +139,10 @@ class BlogApiControllerTest {
                     .build()
         );
 
-        this.mockMvc.perform(
+        final ResultActions resultActions = this.mockMvc.perform(
                 MockMvcRequestBuilders.delete(url, savedArticle.getId())
-        ).andExpect(MockMvcResultMatchers.status().isOk());
+        );
+        resultActions.andExpect(MockMvcResultMatchers.status().isOk());
 
         List<Article> articles = this.blogRepository.findAll();
         assertThat(articles).isEmpty();
@@ -165,12 +170,11 @@ class BlogApiControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request))
         );
-
         resultActions.andExpect(MockMvcResultMatchers.status().isOk());
+
         Article article = this.blogRepository.findById(savedArticle.getId()).get();
         assertThat(article.getTitle()).isEqualTo(newTitle);
         assertThat(article.getContent()).isEqualTo(newContent);
-
     }
 
 }
