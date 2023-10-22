@@ -1,7 +1,7 @@
 package choi.project.service;
 
-import choi.project.domain.Article;
 import choi.project.dto.AddArticleRequest;
+import choi.project.domain.Article;
 import choi.project.dto.UpdateArticleRequest;
 import choi.project.repository.BlogRepository;
 import lombok.RequiredArgsConstructor;

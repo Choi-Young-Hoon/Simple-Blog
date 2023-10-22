@@ -1,4 +1,4 @@
-package choi.project.controller;
+package choi.project.examplethymeleaf;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +34,6 @@ public class ExampleThymeleafContoller {
         model.addAttribute("person", examplePerson);
         model.addAttribute("today", LocalTime.now());
         
-        return "example"; // example.html라는 뷰 조회
+        return "examplethymeleaf/example"; // example.html라는 뷰 조회
     }
 }
