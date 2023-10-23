@@ -7,10 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity // JPA 에서 관리되는 객체로 DB table과 매핑됨
+@EntityListeners(AuditingEntityListener.class) // @CreadtedDate @LastModifiedDate 사용하기 위해 추가
 @Getter // 멤버 변수들에 대한 Getter 함수들 생성
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // protected No argument 기본 생성자를 만듬.
 public class Article {
