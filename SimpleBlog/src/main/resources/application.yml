@@ -1,0 +1,30 @@
+spring:
+  h2:
+    console:
+      enabled: true
+
+  sql:
+    init:
+      encoding: UTF-8
+
+  datasources:
+    url: jdbc:h2:mem:testdb
+
+  jpa:
+    defer-datasource-initialization: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 614766124341-kh4j0fc8s1besp8v1pidssn217mkl4gp.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+server:
+  servlet:
+    encoding:
+      force: true
+

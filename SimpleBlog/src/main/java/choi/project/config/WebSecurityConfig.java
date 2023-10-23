@@ -1,15 +1,23 @@
 package choi.project.config;
 
+import choi.project.config.oauth.OAuth2UserCustomService;
 import choi.project.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
@@ -17,6 +25,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @Configuration
 public class WebSecurityConfig {
     private final UserDetailService userService;
+    private final OAuth2UserCustomService oAuth2UserCustomService;
 
     // 스프링 시큐리티 기능 비활성화
     @Bean
@@ -44,6 +53,12 @@ public class WebSecurityConfig {
                         .invalidateHttpSession(true)) // 로그아웃 후 세션을 전체 삭제할지 여부 설정
                 .csrf(csrf -> csrf
                         .disable()) // CSRF 공격을 방지위해서는 활성화 해야하지만 실습을 편하게 하기위해 비활성화
+                .oauth2Login(oauth2Configure -> oauth2Configure
+                        .loginPage("/login")
+                        .successHandler(successHandler())
+                        .defaultSuccessUrl("/articles")
+                        .userInfoEndpoint(info -> info
+                                .userService(this.oAuth2UserCustomService)))
                 .build();
     }
 
@@ -62,5 +77,22 @@ public class WebSecurityConfig {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    public AuthenticationSuccessHandler successHandler() {
+        return ((request, response, authentication) -> {
+            DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
+
+            String id = defaultOAuth2User.getAttribute("id").toString();
+            String body = """
+                    {"id":"%s"}
+                    """.formatted(id);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+
+            PrintWriter writer = response.getWriter();
+            writer.println(body);
+            writer.flush();
+        });
     }
 }

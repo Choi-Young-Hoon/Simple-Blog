@@ -31,14 +31,16 @@
                                     <label class="form-label text-white">Password</label>
                                     <input type="password" class="form-control" name="password">
                                 </div>
-                            
+
+                                <a href="/oauth2/authorization/google">구글 로그인</a><br><br>
+
                                 <div th:if="${loginError} != null" id="loginErrorMessage" style="color: red;">
                                     로그인 실패
                                 </div>
                                 
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
-
+                                    
                             <button type="button" class="btn btn-secondary mt-3" onclick="location.href='/signup'">회원가입</button>
                         </div>
                     </div>
