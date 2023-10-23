@@ -57,3 +57,22 @@ if (createButton) {
         });
     });
 }
+
+
+// 로그인 폼 로그인 버튼
+document.getElementById('loginForm').addEventListener('submit', function(event){
+    event.preventDefault();
+
+    fetch('/login', {
+        method: 'POST',
+        body: new FormData(event.target)
+    })
+    .then(response => response.json)
+    .then(data => {
+        if (data.success) {
+            window.location.href="/articles";
+        } else {
+            document.getElementById('loginErrorMessage').style.display = 'block';
+        }
+    });
+});
