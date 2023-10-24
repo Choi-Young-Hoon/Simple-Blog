@@ -27,6 +27,7 @@ public class WebSecurityConfig {
     private final UserDetailService userService;
     private final OAuth2UserCustomService oAuth2UserCustomService;
 
+
     // 스프링 시큐리티 기능 비활성화
     @Bean
     public WebSecurityCustomizer configure() {

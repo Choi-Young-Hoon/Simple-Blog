@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,9 +24,11 @@ public class BlogApiController {
     // ResponseEntity 는 RequestEntity(HTTP Request)에 대한 응답데이터를 포함하는 클래스다
     // 따라서 HttpStatus, HttpHeaders, HttpBody 를 포함한다.
     @PostMapping("/api/articles")
-    public ResponseEntity<Article> addArticle(@AuthenticationPrincipal User user, @RequestBody AddArticleRequest request) {
+    public ResponseEntity<Article> addArticle(@AuthenticationPrincipal OAuth2User oAuth2User, @AuthenticationPrincipal User user, @RequestBody AddArticleRequest request) {
+        if (user == null && oAuth2User != null) {
+            user = this.setOAuth2UserToUser(oAuth2User, user);
+        }
         Article savedArticle = this.blogService.save(request, user);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(savedArticle);
     }
 
@@ -58,4 +62,12 @@ public class BlogApiController {
 
         return ResponseEntity.ok().body(updateArticle);
     }
+
+    public User setOAuth2UserToUser(OAuth2User oAuth2User, User user) {
+        user = User.builder()
+                .email(oAuth2User.getAttribute("email"))
+                .build();
+        return user;
+    }
+
 }
