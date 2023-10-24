@@ -49,7 +49,7 @@ if (createButton) {
             },
             body: JSON.stringify({
                 title: document.getElementById("title").value,
-                content: document.getElementById("content").value
+                content: document.getElementById("content").value,
             }),
         }).then(() => {
             alert("등록 완료되었습니다.");
@@ -59,6 +59,7 @@ if (createButton) {
 }
 
 
+/*
 // 로그인 폼 로그인 버튼
 document.getElementById('loginForm').addEventListener('submit', function(event){
     event.preventDefault();
@@ -76,3 +77,4 @@ document.getElementById('loginForm').addEventListener('submit', function(event){
         }
     });
 });
+*/

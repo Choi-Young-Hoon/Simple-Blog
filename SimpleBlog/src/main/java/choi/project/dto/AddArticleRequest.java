@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 public class AddArticleRequest {
     private String title;
     private String content;
+    private String author;
 
-    public Article toEntity() {
+    public Article toEntity(String author) {
         return Article.builder()
                 .title(this.title)
                 .content(this.content)
+                .author(author)
                 .build();
     }
 }

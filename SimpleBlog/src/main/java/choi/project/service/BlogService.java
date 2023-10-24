@@ -1,5 +1,6 @@
 package choi.project.service;
 
+import choi.project.domain.User;
 import choi.project.dto.AddArticleRequest;
 import choi.project.domain.Article;
 import choi.project.dto.UpdateArticleRequest;
@@ -16,8 +17,8 @@ public class BlogService {
     private final BlogRepository blogRepository;
 
     // 블로그 글 추가 메서드
-    public Article save(AddArticleRequest request) {
-        return this.blogRepository.save(request.toEntity());
+    public Article save(AddArticleRequest request, User user) {
+        return this.blogRepository.save(request.toEntity(user.getEmail()));
     }
 
     // 저장된 모든글 조회

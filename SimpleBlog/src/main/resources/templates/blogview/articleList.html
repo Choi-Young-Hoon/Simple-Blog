@@ -8,7 +8,7 @@
     <body>
 
         <div class="p-5 mb-5 text-center</> bg-light">
-            <h1 class="mb-3">My Blog</h1>
+            <a href="/articles" ><h1 class="mb-3">My Blog</h1></a>
             <h4 class="mb-3">블로그에 오신 것을 환영합니다.</h4>
         </div>
 
@@ -23,6 +23,7 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title" th:text="${item.title}"></h5>
+                        <h5 class="card-title">작성자: [[${item.author}]]</h5>
                         <p class="card-text" th:text="${item.content}"></p>
                         <a th:href="@{/articles/{id}(id=${item.id})}" class="btn btn-primary">보러 가기</a>
                     </div>

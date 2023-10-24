@@ -27,6 +27,9 @@ public class Article {
     @Column(name = "content", nullable = false)
     private String content;
 
+    @Column(name = "author", nullable = false)
+    private String author;
+
     @CreatedDate // 엔티티가 생성될때 생성 시간 저장
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -36,9 +39,10 @@ public class Article {
     private LocalDateTime updateAt;
 
     @Builder // 빌더 패턴으로 객체 생성 매개 변수에 대한 접근 가능한 빌더를 만들어주는듯 하다
-    public Article(String title, String content) {
+    public Article(String title, String content, String author) {
         this.title = title;
         this.content = content;
+        this.author = author;
     }
 
     public void update(String title, String content) {

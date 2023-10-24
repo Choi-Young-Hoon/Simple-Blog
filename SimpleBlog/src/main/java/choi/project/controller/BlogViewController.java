@@ -1,10 +1,12 @@
 package choi.project.controller;
 
 import choi.project.domain.Article;
+import choi.project.domain.User;
 import choi.project.dto.ArticleViewResponse;
 import choi.project.service.BlogService;
 import choi.project.dto.ArticleListViewResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,10 +32,11 @@ public class BlogViewController {
     }
 
     @GetMapping("/articles/{id}")
-    public String getArticle(@PathVariable Long id,  Model model) {
+    public String getArticle(@AuthenticationPrincipal User user, @PathVariable Long id, Model model) {
         Article article = this.blogService.findById(id);
 
         model.addAttribute("article", new ArticleViewResponse(article));
+        model.addAttribute("author", user.getEmail());
         return "blogview/article"; // templates/blogview/article.html 뷰 조회
     }
 
