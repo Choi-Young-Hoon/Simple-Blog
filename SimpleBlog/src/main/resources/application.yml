@@ -1,32 +1,32 @@
 spring:
   h2:
     console:
-      enabled: true
+      enabled: true # http://localhost/h2-console 접근 허용
 
   sql:
     init:
-      encoding: UTF-8
+      encoding: UTF-8 # 데이터 베이스 조회시 한글깨짐 문제 수정
 
-  datasources:
-    url: jdbc:h2:mem:testdb
+  datasource:
+    url: jdbc:h2:mem:testdb  # h2 테스트 DB 설정
 
   jpa:
-    defer-datasource-initialization: true
+    defer-datasource-initialization: true # resources 디렉터리의 data.sql Spring boot 시작시 자동 로딩하도록 설정.
 
   security:
     oauth2:
       client:
         registration:
-          google:
+          google: # google oauth 설정
             client-id: 562744272388-nqlach6s86nctf2pncjq00h3mevpij4i.apps.googleusercontent.com
             client-secret: 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
             scope:
               - email
               - profile
 server:
-  port: 10000
+  port: 10000 # Spring boot 서버 서비스 포트 설정
   ssl:
-    enabled: true
+    enabled: true # https 접근 가능하게 설정
     key-store: classpath:bootsecurity.p12
     key-store-password: 123456
     key-store-type: PKCS12
@@ -35,8 +35,9 @@ server:
     include-exception: true # 오류 응답에 exception 내용을 포함할지 여부
     include-stacktrace: always # 오류 응답에 stacktrace 내용을 포함할지 여부
   whitelabel:
-    enalbed: false # 브라우저 요청에 대해 서버 오류시 기본으로 노출할 페이지를 사용할지 여부
+    enalbed: false # 브라우저 요청에 대해 서버 오류시 기본 오류 페이지를 사용할지 여부
   servlet:
-    encoding:
+    encoding: # Spring boot 의 기본인코딩은 ASCII이다. 인코딩을 UTF-8로 사용하도록 설정
+      charset: UTF-8
+      enabled: true
       force: true
-
